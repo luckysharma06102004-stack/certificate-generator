@@ -134,21 +134,19 @@ Problem-solving beyond basic assignments
 ## 📸 Screenshots
 
 ### 🧑‍💻 User Interface
-![Form UI](screenshots/form-ui.png)
+![Form UI](./screenshots/form.png)
 
 ### 🏆 Certificate Preview
-![Certificate Preview](screenshots/certificate-preview.png)
+![Certificate Preview](./screenshots/certificate-preview.png)
 
 ### 📄 PDF Output
-![PDF Output](screenshots/pdf-output.png)
+![PDF Output](./screenshots/pdf-output.png)
 
 ### ⚙️ Admin Panel
-![Admin Panel](screenshots/admin-panel.png)
+![Admin Panel](./screenshots/admin-panel.png)
 
 ---
-
-## 🎬 Demo
-![Demo](screenshots/demo.gif)
+ 
 
 
 
