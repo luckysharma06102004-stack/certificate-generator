@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — Amaanitvam Certificate Generator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #000000;
+      --surface: #0a0a0a;
+      --card: #111111;
+      --border: #1a1a1a;
+      --neon: #00ff88;
+      --neon-dim: rgba(0, 255, 136, 0.12);
+      --neon-glow: 0 0 20px rgba(0, 255, 136, 0.4);
+      --text: #e8e8e8;
+      --text-muted: #666;
+      --row-hover: #161616;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      width: 100%;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--neon);
+      letter-spacing: 1px;
+      text-shadow: var(--neon-glow);
+    }
+
+    .logo-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--neon);
+      border-color: var(--neon);
+      box-shadow: var(--neon-glow);
+    }
+
+    .main {
+      flex: 1;
+      padding: 48px 40px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .top-bar-left h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .top-bar-left p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 28px;
+      min-width: 160px;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--neon);
+      text-shadow: var(--neon-glow);
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 240px;
+      max-width: 440px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    #search-input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 16px 11px 40px;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    #search-input:focus {
+      border-color: var(--neon);
+      box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+    }
+
+    #search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .refresh-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .refresh-btn:hover {
+      color: var(--neon);
+      border-color: var(--neon);
+      box-shadow: 0 0 12px rgba(0, 255, 136, 0.2);
+    }
+
+    .filter-info {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      min-height: 18px;
+    }
+
+    .filter-info span {
+      color: var(--neon);
+      font-weight: 600;
+    }
+
+    .table-container {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: var(--surface);
+    }
+
+    th {
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    th:first-child {
+      color: var(--neon);
+    }
+
+    td {
+      padding: 16px 20px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr {
+      transition: background 0.15s;
+    }
+
+    tbody tr:hover {
+      background: var(--row-hover);
+    }
+
+    .badge-id {
+      background: var(--neon-dim);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      color: var(--neon);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      font-family: 'Courier New', monospace;
+    }
+
+    .td-name {
+      font-weight: 600;
+    }
+
+    .td-role {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .td-date {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .empty-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .empty-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .loading-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .loading-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--neon);
+      border-radius: 50%;
+      margin: 0 3px;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+
+    .highlight {
+      background: rgba(0, 255, 136, 0.2);
+      color: var(--neon);
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 16px 20px; }
+      .main { padding: 32px 16px; }
+      .top-bar { flex-direction: column; align-items: flex-start; }
+      th, td { padding: 12px 14px; }
+      .td-role, .td-date { display: none; }
+    }
+
+    /* Hide any Bolt.new watermark if injected */
+    [data-bolt-badge], .bolt-badge, #bolt-badge,
+    a[href*="bolt.new"], a[href*="stackblitz"] {
+      display: none !important;
+      visibility: hidden !important;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span class="logo-title">AMAANITVAM</span>
+      <span class="logo-sub">Admin Panel</span>
+    </div>
+    <nav>
+      <a href="/">Generator</a>
+    </nav>
+  </header>
+
+  <div class="main">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <h1>Certificates</h1>
+        <p>View and manage all issued certificates</p>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Issued</div>
+        <div class="stat-value" id="total-count">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Filtered Results</div>
+        <div class="stat-value" id="filtered-count">—</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="search-wrapper">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" id="search-input" placeholder="Search by name or event..." />
+      </div>
+      <button class="refresh-btn" id="refresh-btn">Refresh</button>
+    </div>
+
+    <div class="filter-info" id="filter-info"></div>
+
+    <div class="table-container">
+      <div id="table-body">
+        <div class="loading-state">
+          <span class="loading-dot"></span>
+          <span class="loading-dot"></span>
+          <span class="loading-dot"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 Amaanitvam &mdash; Certificate Generator System
+  </footer>
+
+  <script>
+    const API_BASE = '';
+    let allCertificates = [];
+
+    function formatDate(dateStr) {
+      const [year, month, day] = dateStr.split('-');
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function highlight(text, query) {
+      if (!query) return escapeHtml(text);
+      const escaped = escapeHtml(text);
+      const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return escaped.replace(new RegExp(`(${escapedQuery})`, 'gi'), '<span class="highlight">$1</span>');
+    }
+
+    function renderTable(certs, query) {
+      const container = document.getElementById('table-body');
+      document.getElementById('filtered-count').textContent = certs.length;
+
+      if (certs.length === 0) {
+        const msg = query
+          ? `No certificates match "<strong>${escapeHtml(query)}</strong>"`
+          : 'No certificates have been issued yet.';
+        const sub = query ? 'Try a different search term.' : 'Generate one from the main page.';
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">&#128196;</div>
+            <div class="empty-title">${msg}</div>
+            <div class="empty-sub">${sub}</div>
+          </div>`;
+        return;
+      }
+
+      const rows = certs.map(cert => `
+        <tr>
+          <td><span class="badge-id">${escapeHtml(cert.id)}</span></td>
+          <td class="td-name">${highlight(cert.name, query)}</td>
+          <td class="td-role">${highlight(cert.role, query)}</td>
+          <td>${highlight(cert.event, query)}</td>
+          <td class="td-date">${formatDate(cert.date)}</td>
+        </tr>
+      `).join('');
+
+      container.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Certificate ID</th>
+              <th>Recipient</th>
+              <th>Role</th>
+              <th>Event</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    function applyFilter() {
+      const query = document.getElementById('search-input').value.trim().toLowerCase();
+      const infoEl = document.getElementById('filter-info');
+
+      if (!query) {
+        infoEl.textContent = '';
+        renderTable(allCertificates, '');
+        return;
+      }
+
+      const filtered = allCertificates.filter(c =>
+        c.name.toLowerCase().includes(query) ||
+        c.event.toLowerCase().includes(query)
+      );
+
+      infoEl.innerHTML = `Showing <span>${filtered.length}</span> of <span>${allCertificates.length}</span> certificates for "<span>${escapeHtml(query)}</span>"`;
+      renderTable(filtered, query);
+    }
+
+    async function loadCertificates() {
+      document.getElementById('table-body').innerHTML = `
+        <div class="loading-state">
+          <span class="loading-dot"></span>
+          <span class="loading-dot"></span>
+          <span class="loading-dot"></span>
+        </div>`;
+      document.getElementById('total-count').textContent = '—';
+      document.getElementById('filtered-count').textContent = '—';
+
+      try {
+        const response = await fetch(`${API_BASE}/certificates`);
+        if (!response.ok) throw new Error('Failed to load');
+        allCertificates = await response.json();
+        document.getElementById('total-count').textContent = allCertificates.length;
+        applyFilter();
+      } catch (err) {
+        document.getElementById('table-body').innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">&#9888;</div>
+            <div class="empty-title">Failed to load certificates</div>
+            <div class="empty-sub">Make sure the server is running and try again.</div>
+          </div>`;
+        document.getElementById('total-count').textContent = '0';
+        document.getElementById('filtered-count').textContent = '0';
+      }
+    }
+
+    document.getElementById('search-input').addEventListener('input', applyFilter);
+    document.getElementById('refresh-btn').addEventListener('click', loadCertificates);
+
+    loadCertificates();
+  </script>
+</body>
+</html>
