@@ -6,6 +6,10 @@ A fully functional web application built to **automate certificate generation at
 > Designed with a product mindset — not just a college project.
 
 ---
+## 🌐 Live Demo
+
+🔗 https://certificate-generator-ac67.onrender.com/
+
 
 ## Why This Project Stands Out
 
